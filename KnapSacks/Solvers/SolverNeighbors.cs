@@ -121,69 +121,6 @@ namespace KnapSacks.Solvers
             return new Result(bags, itemsNotAdded, accumulatedValue, accumulatedWeight);
         }
 
-        private void PerformSwapps(Result result, Bag currentBag, double thresholdDrift)
-        {
-            var searchedItems = new List<Item>();
-
-            var accumulatedWeight = 0d;
-            var accumulatedValue = 0d;
-
-            var weightThreshold = (currentBag.RemainingCapacity + (result.LeftOverItems.OrderBy(i => i.Weight).FirstOrDefault().Weight) * thresholdDrift);
-
-            foreach (Item item in result.LeftOverItems.OrderBy(i => i.Weight).ToList())
-            {
-                if (accumulatedWeight < weightThreshold)
-                {
-                    if (WeightToBeAdded(accumulatedWeight, item.Weight) <= weightThreshold)
-                    {
-                        accumulatedWeight += item.Weight;
-                        accumulatedValue += item.Value;
-
-                        searchedItems.Add(item);
-                    }
-                }
-            }
-
-            var itemToSwapp = GetNeighboringItem(NeighborType.WeightNeighbor, currentBag, accumulatedWeight, accumulatedValue);
-
-            if (itemToSwapp != null)
-            {
-                currentBag.RemoveItem(itemToSwapp);
-
-                currentBag.AddItems(searchedItems.ToArray());
-            }
-        }
-
-        private double WeightToBeAdded(double accumulatedWeight, double itemWeight) => accumulatedWeight + itemWeight;
-
-        private Item GetNeighboringItem(NeighborType type, Bag bag, double accumulatedWeight, double accumulatedValue)
-        {
-            if(type == NeighborType.WeightNeighbor)
-            {
-                var lowerLimit = accumulatedWeight * 0.65;
-
-                var totalAllowence = (bag.WeightCapacity - bag.AccumulatedWeight) + lowerLimit;
-
-                var fittingItem = bag.Items
-                    .Where(item => item.Weight >= lowerLimit && item.Weight <= totalAllowence)
-                    .Select(item => item)
-                    .Where(item => item.Value < accumulatedValue)
-                    .OrderBy(item => item.Value)
-                    .FirstOrDefault();
-
-                if(fittingItem != null)
-                {
-                    var replacement = fittingItem;
-                }
-
-                return fittingItem;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
         private Result SolveByValueDistribution(List<Bag> bags, List<Item> items)
         {
             throw new NotImplementedException();
