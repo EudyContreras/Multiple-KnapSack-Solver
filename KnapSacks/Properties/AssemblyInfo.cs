@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("KnapSacks")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A program for solving the Multiple Knapsack problem using both the Greedy approach and Nearest Neighbor Search")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Eudy Contreras")]
 [assembly: AssemblyProduct("KnapSacks")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
